@@ -1,15 +1,19 @@
 package com.myRetail.product.dao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.cassandra.core.CassandraOperations;
+import org.springframework.stereotype.Component;
+
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import com.datastax.driver.core.querybuilder.Update;
+import com.myRetail.product.controller.ProductLookupController;
 import com.myRetail.product.model.Price;
 import com.myRetail.product.model.PriceEntity;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.data.cassandra.core.CassandraOperations;
-import org.springframework.stereotype.Component;
 
 @Component("priceDAO")
 public class PriceDAO {
@@ -25,21 +29,25 @@ public class PriceDAO {
 	CassandraOperations cassandraTemplate;
 	@Autowired
 	Session session;
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductLookupController.class);
+	
 	public Price getPriceInfo(String prodId) {
 		Price price = null;
-		PriceEntity priceEntity = new PriceEntity();
+		PriceEntity priceEntity ;
 		try {
-			
+
 			Select cqlGetPrice = QueryBuilder.select().from(TABLE_NAME);
 			cqlGetPrice.where(QueryBuilder.eq(PROD_ID, prodId));
 			priceEntity = cassandraTemplate.selectOne(cqlGetPrice, PriceEntity.class);
-			price = new Price();
-			price.setCurrency_code(priceEntity.getCurrency());
-			price.setValue(priceEntity.getPrice());
-		} catch (Exception e) {
-			e.printStackTrace();
-			// Do nothing
+			if (null != priceEntity) {
+				price = new Price();
+				price.setCurrency_code(priceEntity.getCurrency());
+				price.setValue(priceEntity.getPrice());
+			}
+		} catch (DataAccessException dae) {
+			LOGGER.error("Exception while accessing cAssandra",dae);
+			dae.printStackTrace();
+			
 		}
 		return price;
 

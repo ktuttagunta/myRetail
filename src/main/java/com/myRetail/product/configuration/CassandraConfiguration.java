@@ -21,8 +21,8 @@ public Environment env;
 	public CassandraClusterFactoryBean cluster() {
 		final CassandraClusterFactoryBean cluster = new CassandraClusterFactoryBean();
 		cluster.setContactPoints("127.0.0.1");
-		System.out.println("!222222222222222222222222222222"+env.getProperty("cassandra.contactpoints"));
-		System.out.println("!333333333333333333333333333333"+env.getProperty("cassandra.port"));
+		System.out.println("!contractPoints !!!!!!!!!!"+env.getProperty("cassandra.contactpoints"));
+		System.out.println("!Cassandra Port: "+env.getProperty("cassandra.port"));
 		cluster.setPort(9042);		
 		return cluster;
 	}
