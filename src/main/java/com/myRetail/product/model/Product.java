@@ -10,21 +10,35 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({"id","name","price"})
 public class Product {	
 	@JsonProperty("id")
-	int id;
+	String id;
 	@JsonProperty("name")
 	String name;
-	@JsonProperty("price")
+	@JsonProperty("current_price")
 	Price price;
+	@JsonProperty("status")
+	String status;
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return status;
+	}
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	/**
