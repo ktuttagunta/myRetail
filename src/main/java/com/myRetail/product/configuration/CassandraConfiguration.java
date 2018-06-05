@@ -1,5 +1,7 @@
 package com.myRetail.product.configuration;
-
+/*
+ * Cassandra configuration class
+ */
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,8 @@ public Environment env;
 	@Bean
 	public CassandraClusterFactoryBean cluster() {
 		final CassandraClusterFactoryBean cluster = new CassandraClusterFactoryBean();
-		cluster.setContactPoints("127.0.0.1");
-		System.out.println("!contractPoints !!!!!!!!!!"+env.getProperty("cassandra.contactpoints"));
-		System.out.println("!Cassandra Port: "+env.getProperty("cassandra.port"));
-		cluster.setPort(9042);		
+		cluster.setContactPoints(env.getProperty("cassandra.contactpoints"));
+		cluster.setPort(Integer.parseInt(env.getProperty("cassandra.port")));		
 		return cluster;
 	}
 
@@ -45,7 +45,7 @@ public Environment env;
 
 		CassandraSessionFactoryBean session = new CassandraSessionFactoryBean();
 		session.setCluster(cluster().getObject());
-		session.setKeyspaceName("product");
+		session.setKeyspaceName(env.getProperty("cassandra.keyspace"));
 		session.setConverter(converter());
 		session.setSchemaAction(SchemaAction.NONE);
 

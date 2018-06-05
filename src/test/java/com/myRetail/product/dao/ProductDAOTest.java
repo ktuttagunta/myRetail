@@ -33,22 +33,21 @@ import com.myRetail.product.model.Product;
 @WebAppConfiguration
 public class ProductDAOTest {
 	/** The rest template. */
-	
+
 	@Mock
 	private RestTemplate restTemplate;
-	
-	
+
 	@InjectMocks
 	private ProductDAO dao;
 	
 	private Price price;
 
 	private Product product;
-	
+
 	String PRODUCT_URL = "http://redsky.target.com/v2/pdp/tcin/13860428?excludes=taxonomy,price,promotion,bulk_ship,rating_and_review_reviews,rating_and_review_statistics,question_answer_statistics";
-	
+
 	String responseJson = "{\"product\":{\"item\":{\"tcin\":\"13860428\",\"product_description\":{\"title\":\"The Big Lebowski (Blu-ray)\"}}}}";
-	
+
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
@@ -62,23 +61,20 @@ public class ProductDAOTest {
 
 	@Test
 	public void testGetProductDetails() throws RestClientException, JsonParseException, IOException {
-		
-		JsonNode root = getJsonNode();
-		System.out.println("#$$$$$$$$$$$$$4"+root.at("/product/item/product_description/title").asText());
+
 		Mockito.when(restTemplate.getForObject(Mockito.anyString(), Mockito.any())).thenReturn(responseJson);
-		
+
 		ResponseEntity<Product> response = dao.getProductFromRedSky("13860428");
 
 		assertNotNull(response);
-		System.out.println("#$$$$$$$$$$$$$4"+response.getBody().getName());
 		assertTrue(response.getBody().getName().equals("The Big Lebowski (Blu-ray)"));
 	}
-	 public JsonNode getJsonNode() throws JsonParseException, IOException  {
-	        
 
-	        ObjectMapper mapper = new ObjectMapper();
-	        JsonFactory factory = mapper.getFactory();
-	        JsonParser jp = factory.createParser(responseJson);
-	        return mapper.readTree(jp);
-	    }
+	public JsonNode getJsonNode() throws JsonParseException, IOException {
+
+		ObjectMapper mapper = new ObjectMapper();
+		JsonFactory factory = mapper.getFactory();
+		JsonParser jp = factory.createParser(responseJson);
+		return mapper.readTree(jp);
+	}
 }
