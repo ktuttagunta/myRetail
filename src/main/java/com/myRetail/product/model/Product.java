@@ -17,6 +17,8 @@ public class Product {
 	Price price;
 	@JsonProperty("status")
 	String status;
+	@JsonProperty("errorMessage")
+	String errorMessage;
 	/**
 	 * @return the status
 	 */
@@ -64,6 +66,12 @@ public class Product {
 	 */
 	public void setPrice(Price price) {
 		this.price = price;
+	}
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 	
 	

@@ -24,7 +24,7 @@ public class ProductLookupService {
 	
 	public ResponseEntity<Product> getProduct(String prodId)
 	{
-
+System.out.println("#####################################################3");
 		ResponseEntity<Product> response = prodDAO.getProductFromRedSky(prodId);
 		if (null == response || null == response.getBody() || response.getStatusCode() != HttpStatus.OK) {
 

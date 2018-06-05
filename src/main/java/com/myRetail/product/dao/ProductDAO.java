@@ -13,12 +13,14 @@ public class ProductDAO {
 	
 	public ResponseEntity<Product> getProductFromRedSky(String prodId)
 	{
-		String PRODUCT_URL = "https://redsky.target.com/v2/pdp/tcin/"+prodId+"?excludes=taxonomy,price,promotion,bulk_ship,rating_and_review_reviews,rating_and_review_statistics,question_answer_statistics";
+		String PRODUCT_URL = "http://redsky.target.com/v2/pdp/tcin/"+prodId+"?excludes=taxonomy,price,promotion,bulk_ship,rating_and_review_reviews,rating_and_review_statistics,question_answer_statistics";
 		Product product = new Product();
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			
 			JsonNode root = restTemplate.getForObject(PRODUCT_URL, JsonNode.class);
+			
+		System.out.println("###############################"+root);
 			String name = root.at("/product/item/product_description/title").asText();
 			product.setName(name);
 			product.setId(prodId);
@@ -31,6 +33,6 @@ public class ProductDAO {
 		}
 
 
-	}
+	}	
 
 }
